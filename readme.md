@@ -2,7 +2,7 @@
 
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![CI](https://github.com/ТВОЙ_ЛОГИН/ТВОЙ_РЕПОЗИТОРИЙ/actions/workflows/lint.yml/badge.svg)
+![CI](https://github.com/iamyblitz/Quantization-using-MHAQ/actions/workflows/lint.yml/badge.svg)
 
 #### О проекте (About)
 Данный репозиторий содержит скрипты модификации и конфигурационные файлы для экстремально низкобитного квантования (1, 3 и 4 бита) модели **ResNet-18** с использованием фреймворка [MHAQ](https://github.com/aifoundry-org/MHAQ).
