@@ -1,0 +1,71 @@
+data:
+    value:
+        augmentations: null
+        batch_size: 256
+        data_dir: ./data
+        dataset_name: CIFAR100
+        num_workers: 4
+        params: []
+model:
+    value:
+        cpt_url: null
+        name: resnet18
+        params:
+            num_classes: 100
+            pretrained: true
+        type: VISION_CLS
+quantization:
+    value:
+        act_bit: 3
+        activation_zero_point: 0
+        calibration:
+            act_bit: 10
+            weight_bit: 10
+        excluded_layers:
+            - conv1
+            - fc
+        freeze_batchnorm: false
+        fuse_batchnorm: false
+        name: GDNSQQuant
+        params:
+            distillation: false
+            distillation_loss: Symmetrical KL
+            distillation_teacher: null
+            qnmethod: STE
+        qmethod: GDNSQ
+        qscheme: PER_CHANNEL
+        quantize_bias: false
+        weight_bit: 3
+training:
+    value:
+        callbacks:
+            ModelCheckpoint:
+                params:
+                    filename: gdnsq_checkpoint-{epoch:02d}-{Metric/ns_Accuracy_top1:.4f}
+                    mode: max
+                    monitor: Metric/ns_Accuracy_top1
+                    save_top_k: 2
+            NoiseEarlyStopping:
+                params:
+                    min_delta: 0.0001
+                    mode: max
+                    monitor: Metric/ns_Accuracy_top1
+                    patience: 100
+                    strict: false
+            TemperatureScale:
+                params:
+                    scale_anneal: 0.9995
+                    scale_lr: 1
+                    warmup: 1000
+        criterion: CrossEntropyLoss
+        learning_rate: 0.002
+        log_every_n_steps: 100
+        loggers:
+            WandbLogger:
+                params:
+                    name: resnet18-cifar100-gdnsq-w3a3-nodist
+                    note: ResNet18 CIFAR-100 w3a3 AMP NoDist
+        max_epochs: 1500
+        optimizer: RAdam
+        val_check_interval: null
+        val_every_n_epochs: 5
